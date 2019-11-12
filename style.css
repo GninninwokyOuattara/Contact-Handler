@@ -1,0 +1,30 @@
+*{
+    box-sizing: border-box;
+}
+
+.container{
+    margin: auto;
+    margin-top: 25%;
+}
+
+div.top{
+    background-color: aqua;
+    width: 100%;
+    height: 150px;
+    border: 1px solid rgb(175, 31, 31);
+    text-align: center;
+    padding: 40px;
+}
+
+div.bottom{
+    padding: 30px;
+    text-align: center;
+
+}
+
+div.bottom > button{
+    margin: 0px 10px;
+    text-align: center;
+    width: 100px;
+    height: 50px;
+}
