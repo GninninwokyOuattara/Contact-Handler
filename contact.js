@@ -21,89 +21,46 @@ const btnAnnuler = document.getElementsByClassName("annuler")[0];
 const input = document.getElementsByTagName("input")[0];
 
 //Listening to input
-let name, surname, inputValue;
+let contactName, contactSurname, inputValue;
 let eventState = "forChoiceInput";
 
 
-
-
-
-
-
-
-
-
-function defaultListener() {
-    document.getElementsByClassName("status")[0].innerHTML = 
-    "Faites un choix";
-    btnValider.addEventListener("click", function(e) {
-        inputValue = input.value;
-        input.value = "";
-    
-        if(inputValue !="" && inputValue == "0"){
+function main(){
+    /*
+    if(eventState == "forChoiceInput" && input.value in ["0", "1", "2"]){
+        
+    }*/
+    let inputValue = input.value.trim(); //take the current value of the input field when btn-valider clicked
+    input.value = "" //blank field
+    switch (inputValue) {
+        case "0":
+            //hide the container
             document.getElementsByClassName("container")[0].style.display = "none";
-        }
-        if(inputValue != "" && inputValue == "1"){
-            return showContactList();
-        }
-        if(inputValue != "" && inputValue == "2"){
-            btnValider.removeEventListener("click", e);
-            return nameListener();
-            //add  new contact, we call nameListener()
-            
-        }
-    });
+            break;
+
+        case "1":
+            showContactList();
+
+            break;
+
+        case "2":
+            //New contact
+            btnValider.setAttribute("onclick", "nameInput()");
+            document.getElementsByClassName("status")[0].innerHTML =
+            "Entrez le nom du contact";
+
+            break;
+
+        default:
+            console.log("Invalide");
+            break;
+    }
 }
-
-function nameListener(){
-    document.getElementsByClassName("status")[0].innerHTML = 
-    "Entrez le nom du contact";
-    btnValider.addEventListener("click", function(event){
-        inputValue = input.value.trim();
-        input.value = "";
-        if(inputValue != "" && inputValue.length> 1){
-            name = inputValue;
-            btnValider.removeEventListener("click", btnValider);
-            return surnameListener();
-        }
-        else{
-            console.log(inputValue);
-        }
-    });
-}
-
-function surnameListener(){
-    document.getElementsByClassName("status")[0].innerHTML = 
-    "Entrez le prenom du contact";
-    btnValider.addEventListener("click", function(event){
-        inputValue = input.value.trim();
-        input.value = "";
-        if(inputValue != "" && inputValue.length> 1){
-            surname = inputValue;
-            btnValider.removeEventListener("click", btnValider);
-            //push the new contact into the contact object
-            contactsList.push({
-                name: name,
-                surname: surname
-            });
-            name = "";
-            surname = "";
-            defaultListener();
-        }
-    });
-
-}
-
-
- 
-
-
-
 
 function showContactList(){
     //Print in console the contacts list by name and surname
     for(let contact of contactsList){
-        console.log(`Nom : ${contact.nom}\nPénom : ${contact.prenom}`);
+        console.log(`Nom : ${contact.nom}\nPrénom : ${contact.prenom}`);
     }
 }
 
@@ -112,4 +69,41 @@ function clearInput(){
     input.value = "";
 }
 
-defaultListener();
+function nameInput(){
+    let inputValue = input.value.trim();
+    input.value = "";
+    if(inputValue != ""){
+        contactName = inputValue;
+        console.log("Nom valide");
+        btnValider.setAttribute("onclick", "surnameInput()");
+        document.getElementsByClassName("status")[0].innerHTML =
+            "Entrez le prenom du contact";
+
+        
+    } else {
+        console.log("Nom invalide");
+    }
+}
+
+function surnameInput(){
+    let inputValue = input.value.trim();
+    input.value = "";
+    if(inputValue != ""){
+        contactSurname = inputValue;
+        console.log("Prenom valide");
+        btnValider.setAttribute("onclick", "main()");
+        document.getElementsByClassName("status")[0].innerHTML =
+            "Entrez le nom du contact";
+        contactsList.push({
+            nom: contactName,
+            prenom: contactSurname    
+        });
+        
+
+        
+    } else {
+        console.log("Prenom invalide");
+    }
+}
+
+//defaultListener();
