@@ -93,7 +93,7 @@ function surnameInput(){
         console.log("Prenom valide");
         btnValider.setAttribute("onclick", "main()");
         document.getElementsByClassName("status")[0].innerHTML =
-            "Entrez le nom du contact";
+            "Faites un choix";
         contactsList.push({
             nom: contactName,
             prenom: contactSurname    
