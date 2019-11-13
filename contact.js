@@ -21,77 +21,82 @@ const btnAnnuler = document.getElementsByClassName("annuler")[0];
 const input = document.getElementsByTagName("input")[0];
 
 //Listening to input
-let name, surname;
-btnValider.addEventListener("click", function (e) {
-    switch (input.value) {
-        case "1":
-            //Contacts List
-            showContactList();
-            clearInput();
-            break;
-        case "2":
-            //Add a new contact
-            clearInput();
-            
-            document.getElementsByClassName("status")[0].innerHTML = 
-            "Entrez le nom du contact";
-            btnValider.addEventListener("click", function(e){
-                if(input.value.length <= 1){
-                    console.log("Nom trop court");
-                    //continue;
+let name, surname, inputValue;
+let eventState = "forChoiceInput";
 
-                } else {
-                    name = input.value;
-                    clearInput();
-                    document.getElementsByClassName("status")[0].innerHTML =
-                    "Entrez le prenom du contact";
-                    btnValider.addEventListener("click", function(e){
-                        console.log(input.value);
-                        if(input.value.length <= 1){
-                            //a regler
-                            console.log(input.value);
-                            console.log(input.value.length);
-                            console.log("Trop court");
-                            //continue;
 
-                            //
-                        } else {
-                            surname = input.value;
-                            clearInput();
-                            contactsList.push({name: name, surname : surname});
-                            document.getElementsByClassName("status")[0].innerHTML =
-                            "Faites un choix";
-                        }
-                    });
-                } /*else {
-                    console.log("Something wasn't right.");
-                }*/
-                
-            });
 
-            
 
-            break;
 
-        case "0":
-            //Quit
 
+
+
+
+
+function defaultListener() {
+    document.getElementsByClassName("status")[0].innerHTML = 
+    "Faites un choix";
+    btnValider.addEventListener("click", function(e) {
+        inputValue = input.value;
+        input.value = "";
+    
+        if(inputValue !="" && inputValue == "0"){
             document.getElementsByClassName("container")[0].style.display = "none";
+        }
+        if(inputValue != "" && inputValue == "1"){
+            return showContactList();
+        }
+        if(inputValue != "" && inputValue == "2"){
+            btnValider.removeEventListener("click", e);
+            return nameListener();
+            //add  new contact, we call nameListener()
+            
+        }
+    });
+}
 
-            break;
-        default:
-            break;
-    }
-});
+function nameListener(){
+    document.getElementsByClassName("status")[0].innerHTML = 
+    "Entrez le nom du contact";
+    btnValider.addEventListener("click", function(event){
+        inputValue = input.value.trim();
+        input.value = "";
+        if(inputValue != "" && inputValue.length> 1){
+            name = inputValue;
+            btnValider.removeEventListener("click", btnValider);
+            return surnameListener();
+        }
+        else{
+            console.log(inputValue);
+        }
+    });
+}
 
-/*
-btnValider_nom.addEventListener("click", function(e){
-    if(isNaN(input.value || input.value.length<=1)){
-        clearInput();
-    }
-  
-});
-*/
+function surnameListener(){
+    document.getElementsByClassName("status")[0].innerHTML = 
+    "Entrez le prenom du contact";
+    btnValider.addEventListener("click", function(event){
+        inputValue = input.value.trim();
+        input.value = "";
+        if(inputValue != "" && inputValue.length> 1){
+            surname = inputValue;
+            btnValider.removeEventListener("click", btnValider);
+            //push the new contact into the contact object
+            contactsList.push({
+                name: name,
+                surname: surname
+            });
+            name = "";
+            surname = "";
+            defaultListener();
+        }
+    });
+
+}
+
+
+ 
+
 
 
 
@@ -107,34 +112,4 @@ function clearInput(){
     input.value = "";
 }
 
-
-/*
-function setupNameInput(){
-    //set for name input
-    document.getElementsByClassName("status")[0].innerHTML = "Entrez le nom du contact";
-    document.getElementsByTagName("input")[0].className = "nom";
-    document.getElementsByTagName("button")[1].className = "btnValider_nom";
-
-
-
-}
-
-function setupSurnameInput(){
-    //set for name input
-    document.getElementsByClassName("status")[0].innerHTML = "Entrez le prenom du contact";
-    document.getElementsByTagName("input")[0].className = "prenom";
-    document.getElementsByTagName("button")[1].className = "btnValider_prenom";
-
-
-
-}
-
-
-
-function setField(status, input){
-    clearInput();
-    document.getElementsByClassName(status)[0].innerHTML = "Entrez le nom du contact";
-
-}
-
-*/
+defaultListener();
