@@ -1,10 +1,5 @@
 "strict mode";
 
-const defaultSettings = {
-    h3 : {},
-    status: "Veuillez faire un choix",
-
-};
 
 const contactsList = [{
         nom: "Lévisse",
@@ -26,10 +21,7 @@ let eventState = "forChoiceInput";
 
 
 function main(){
-    /*
-    if(eventState == "forChoiceInput" && input.value in ["0", "1", "2"]){
-        
-    }*/
+
     let inputValue = input.value.trim(); //take the current value of the input field when btn-valider clicked
     input.value = "" //blank field
     switch (inputValue) {
@@ -39,12 +31,13 @@ function main(){
             break;
 
         case "1":
+            //Display current contact in the contact list
             showContactList();
 
             break;
 
         case "2":
-            //New contact
+            //Prepare to add new contact
             btnValider.setAttribute("onclick", "nameInput()");
             document.getElementsByClassName("status")[0].innerHTML =
             "Entrez le nom du contact";
@@ -52,7 +45,7 @@ function main(){
             break;
 
         default:
-            console.log("Invalide");
+            //console.log("Invalide");
             break;
     }
 }
@@ -74,14 +67,14 @@ function nameInput(){
     input.value = "";
     if(inputValue != ""){
         contactName = inputValue;
-        console.log("Nom valide");
+        //console.log("Nom valide");
         btnValider.setAttribute("onclick", "surnameInput()");
         document.getElementsByClassName("status")[0].innerHTML =
             "Entrez le prenom du contact";
 
         
     } else {
-        console.log("Nom invalide");
+        //console.log("Nom invalide");
     }
 }
 
@@ -90,7 +83,7 @@ function surnameInput(){
     input.value = "";
     if(inputValue != ""){
         contactSurname = inputValue;
-        console.log("Prenom valide");
+        //console.log("Prenom valide");
         btnValider.setAttribute("onclick", "main()");
         document.getElementsByClassName("status")[0].innerHTML =
             "Faites un choix";
@@ -102,8 +95,6 @@ function surnameInput(){
 
         
     } else {
-        console.log("Prenom invalide");
+        //console.log("Prenom invalide");
     }
 }
-
-//defaultListener();
